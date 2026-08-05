@@ -431,17 +431,29 @@ export class SaveManager {
         let hits_array = this.setArrayBestiary(this._hits, 3);
         let encounters_array = this.setArrayBestiary(this._encounters, 1);
 
-        let bestiary_data = new Array<number>();
-        bestiary_data.push(...deaths_array);
-        bestiary_data.push(...kills_array);
-        bestiary_data.push(...hits_array);
-        bestiary_data.push(...encounters_array);
+        const bestiary_data = deaths_array
+            .concat(kills_array)
+            .concat(hits_array)
+            .concat(encounters_array);
 
-        let tmpData = new Array<number>();
-        tmpData.push(...this._data);
-        tmpData.splice(this._bestiaryOffsets[0], bestiaryLength * 8, ...bestiary_data);
+        const start = this._bestiaryOffsets[0];
 
-        this._data = new Uint8Array(tmpData);
+        const oldLengths = Manipulation.getBestiaryLengths(this._data, this._bestiaryOffsets);
+        let oldSize = oldLengths.reduce((sum, len) => sum + 0x8 + len * 2, 0);
+
+        const available = this._data.length - 0x8 - start;
+        if (oldSize > available || oldSize < 0x20) {
+            oldSize = Math.max(0, available);
+        }
+
+        const newData = new Uint8Array(this._data.length - oldSize + bestiary_data.length);
+        newData.set(this._data.subarray(0, start), 0);
+        newData.set(bestiary_data, start);
+        newData.set(this._data.subarray(start + oldSize), start + bestiary_data.length);
+
+        this._data = newData;
+        this._sectionOffsets = Manipulation.getSectionOffsets(this._data);
+        this._bestiaryOffsets = Manipulation.getBestiaryOffsets(this._data, this._sectionOffsets);
 
         Manipulation.setBestiaryOffsets(this._data, this._sectionOffsets, bestiaryLength);
     }

@@ -269,16 +269,16 @@ export class SaveController {
 
         this._modalBestiary.querySelector("#modal-enemy-name")!.textContent = entity.getName();
         let a = this._modalBestiary.querySelector("#modal-enemy-kills")! as HTMLInputElement;
-        a.defaultValue = entity.getKills().toString();
+        a.value = entity.getKills().toString();
 
         a = this._modalBestiary.querySelector("#modal-enemy-deaths")! as HTMLInputElement;
-        a.defaultValue = entity.getDeaths().toString();
+        a.value = entity.getDeaths().toString();
 
         a = this._modalBestiary.querySelector("#modal-enemy-hits")! as HTMLInputElement;
-        a.defaultValue = entity.getHits().toString();
+        a.value = entity.getHits().toString();
 
         a = this._modalBestiary.querySelector("#modal-enemy-encounters")! as HTMLInputElement;
-        a.defaultValue = entity.getEncounter().toString();
+        a.value = entity.getEncounter().toString();
 
         this._modalBestiary.querySelectorAll("img")!.forEach((img: HTMLImageElement) => {
             img.src = `/assets/gfx/enemies/${entity.getName().replace(/ /g, "_")}.png`;
