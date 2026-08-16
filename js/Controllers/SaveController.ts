@@ -57,6 +57,7 @@ export class SaveController {
         
         save.addObserver(this._saveView);
         this.addEventListeners();
+        this.reloadData(false);
     }
 
     public update() {
@@ -94,10 +95,11 @@ export class SaveController {
         })
 
         this._downloadButtons.forEach((button) => button.addEventListener("click", () => {
+            this.cacheData(this._save.data, this._save.get_filename());
             this.downloadFile(this._save.data, this._save.get_filename());
         }));
 
-        this._reloadButtons.forEach((button) => button.addEventListener("click", () => this.reloadData()));
+        this._reloadButtons.forEach((button) => button.addEventListener("click", () => this.reloadData(true)));
 
         this._uploadButton.addEventListener("click", () => {
             this._uploadButton.value = "";
@@ -138,8 +140,7 @@ export class SaveController {
                 const targetId = tab.id.replace('tab', 'content');
                 const targetContent = document.getElementById(targetId);
 
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+                tabs.forEach(t => t.classList.toggle('active', t.id === tab.id));
 
                 // Affichage/Masquage des contenus
                 contents.forEach(content => content.classList.add('hidden'));
@@ -199,6 +200,10 @@ export class SaveController {
 
     private displayMenus() {
         document.querySelectorAll('[id^="tab"]').forEach((element) => {
+            if (element.id == "tab-menu") {
+                element.classList.add("hidden");
+                return;
+            }
             if (element.id == "tab-others") return;
             element.classList.remove("hidden");
         });
@@ -224,8 +229,7 @@ export class SaveController {
             let data = new Uint8Array(result);
             let name = file.name;
             this._save.update(data).then(() => {
-                localStorage.setItem("original-save", this.encodeData(data));
-                localStorage.setItem("original-save-filename", name);
+                this.cacheData(data, name);
                 this._save.set_filename(name);
                 this.displayMenus();
                 let tabs = document.querySelectorAll('.tab-content') as NodeListOf<HTMLElement>;
@@ -242,7 +246,7 @@ export class SaveController {
 
     }
 
-    private reloadData(): void {
+    private reloadData(showConfirmation: boolean): void {
         const storedData = localStorage.getItem("original-save");
         const filename = localStorage.getItem("original-save-filename");
         if (!storedData || !filename) return;
@@ -251,10 +255,17 @@ export class SaveController {
         const data = Uint8Array.from(binary, character => character.charCodeAt(0));
         this._save.update(data).then(() => {
             this._save.set_filename(filename);
+            this.displayMenus();
             document.querySelectorAll<HTMLElement>('.tab-content').forEach((tab) => tab.dataset.loaded = '');
+            this.update();
             document.querySelector<HTMLButtonElement>('#tab-achievements')?.click();
-            showToast('Original save restored', 'success');
+            if (showConfirmation) showToast('Saved file restored', 'success');
         });
+    }
+
+    private cacheData(data: Uint8Array, filename: string): void {
+        localStorage.setItem("original-save", this.encodeData(data));
+        localStorage.setItem("original-save-filename", filename);
     }
 
     private encodeData(data: Uint8Array): string {
