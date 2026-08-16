@@ -26,6 +26,7 @@ export class SaveView implements Observer {
     private _bestiary: HTMLElement;
     private _stats: HTMLElement;
     private _controller: SaveController;
+    private _achievementSearch: HTMLInputElement;
 
     constructor(controller: SaveController) {
         this._achievements = document.getElementById("content-achievements")!;
@@ -34,7 +35,10 @@ export class SaveView implements Observer {
         this._challenges = document.getElementById("content-challenges")!;
         this._bestiary = document.getElementById("content-bestiary")!;
         this._stats = document.getElementById("content-stats")!;
+        this._achievementSearch = document.getElementById("search-achievements") as HTMLInputElement;
         this._controller = controller;
+
+        this._achievementSearch.addEventListener("input", () => this.filterAchievements());
     }
 
     update(data: any) {
@@ -143,6 +147,25 @@ export class SaveView implements Observer {
         });
     
         render(html`${achievementsHTML}`, wrapper!);
+        this.filterAchievements();
+    }
+
+    private filterAchievements(): void {
+        const terms = this._achievementSearch.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
+        this._achievements.querySelectorAll<HTMLElement>(".achievements").forEach((element) => {
+            const searchable = `${element.dataset.name} ${element.dataset.id}`.toLowerCase();
+            const matches = terms.every((term) => {
+                let position = 0;
+                for (const character of searchable) {
+                    if (character === term[position]) position++;
+                    if (position === term.length) return true;
+                }
+                return false;
+            });
+
+            element.classList.toggle("hidden", !matches);
+        });
     }
 
     private populateChallenges(data: any): void {

@@ -253,6 +253,9 @@ function getAssetPath($name) {
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div>Unlocked</div>
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-neutral-600"></div>Locked (greyed)</div>
                 </div>
+                <input id="search-achievements" type="search" placeholder="Search achievements by name or ID..." autocomplete="off"
+                    class="w-full mb-6 rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
+                    style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
                 <div class="card p-3 rounded-xl mb-6 text-sm color-muted">
                     <p>When the game loads the savefile, it will check marks, endings and stats to unlock achievements.<br>For example, if you disable all achievements and you have the "Mom" ending, it will unlock corresponding achievements.</p>
                 </div>

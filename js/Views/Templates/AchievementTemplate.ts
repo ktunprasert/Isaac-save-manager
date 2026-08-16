@@ -9,6 +9,8 @@ export const getAchievementTemplate = (achievement: Achievement, index: number, 
         <div class="p-2 bg-black/20 hover:bg-white/10 border border-white/5 rounded-2xl achievements cursor-pointer transition-all hover:scale-105 shadow-md flex items-center justify-center animate-stagger" 
              style="animation-delay: ${delay}ms" 
              data-id="${achievement.getID()}" 
+             data-name="${achievement.toString()}"
+             title="${achievement.toString()} (#${achievement.getID()})"
              data-unlocked="${achievement.unlocked}"
              @click=${() => controller.toggleAchievement(achievement.getID(), achievement.unlocked)}>
             <img loading="lazy" 
