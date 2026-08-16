@@ -1,18 +1,3 @@
-<?php
-// include/helpers/helper.php
-
-function getAssetPath($name) {
-    $manifestPath = __DIR__ . '/dist/manifest.json';
-    if (file_exists($manifestPath)) {
-        $manifest = json_decode(file_get_contents($manifestPath), true);
-        return ($manifest[$name] ?? $name);
-    }
-
-    echo 'No manifest file found';
-    echo $manifestPath;
-    return '/dist/' . $name;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +19,7 @@ function getAssetPath($name) {
         }
       }
     </script>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <script>
         (function() {
             var t = localStorage.getItem('theme') || 'flat';
@@ -437,6 +422,6 @@ function getAssetPath($name) {
         }
 
     </script>
-    <script type="module" src="<?= getAssetPath("main.js") ?>"></script>
+    <script type="module" src="/js/Main.ts"></script>
 </body>
 </html>

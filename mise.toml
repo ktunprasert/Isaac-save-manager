@@ -1,3 +1,2 @@
 [tools]
-"github:php/frankenphp" = "latest"
 node = "25"

@@ -6,11 +6,9 @@ A web-based save file editor for **The Binding of Isaac: Repentance** (and Repen
 
 -  Load `.dat` save files directly from your computer (no upload to any server)
 -  Export edited save files to re-import them into the game
--  Convert Repentance+ saves to Repentance format
 -  Unlock all achievements and marks
 -  Complete all challenges
 -  View and edit your bestiary
--  View statistics like deaths, kills, broken rocks, etc.
 -  Nothing is saved to any server
 
 ##  Save File Locations
@@ -34,19 +32,19 @@ Once you've edited your save file and placed it back in the correct folder, open
 5. Click **Export Save File** to download your modified save.
 6. Replace your original save file with the new one (MAKE A BACKUP PLEASE).
 
-## Displayed Statistics
+## Development
 
-- Total deaths
-- Mom’s kills
-- Rocks broken
-- Shopkeepers killed
-- Coins donated
-- (More to come...)
+```bash
+npm install
+npm run dev
+```
 
-##  Roadmap
+Create a production build with `npm run build` and test it with
+`npm run preview`.
+
+## Roadmap
 
 - Unlock specific sins
-- Editable statistics (deaths, kills, etc.)
 - UI/UX improvements
 - Community feedback & suggestions welcome!
 
