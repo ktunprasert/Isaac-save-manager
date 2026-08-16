@@ -26,9 +26,9 @@ export class SaveController {
 
     private _sins: HTMLButtonElement
 
-    private _downloadButton: HTMLButtonElement;
+    private _downloadButtons: NodeListOf<HTMLButtonElement>;
+    private _reloadButtons: NodeListOf<HTMLButtonElement>;
     private _uploadButton: HTMLInputElement;
-    private _convertButton: HTMLButtonElement;
 
     constructor(save: Save)
     {
@@ -44,9 +44,9 @@ export class SaveController {
         this._modalBestiary = document.getElementById("modal-bestiary") as HTMLDivElement;
         this._sins = document.getElementById("unlock-sins") as HTMLButtonElement;
 
-        this._downloadButton = document.getElementById("download-button") as HTMLButtonElement;
+        this._downloadButtons = document.querySelectorAll(".download-button");
+        this._reloadButtons = document.querySelectorAll(".reload-button");
         this._uploadButton = document.getElementById("upload-button") as HTMLInputElement;
-        this._convertButton = document.getElementById("convert-button") as HTMLButtonElement;
 
         document.getElementById("close-modal")?.addEventListener("click", () => {
             this._modalBestiary.classList.add("hidden");
@@ -62,7 +62,6 @@ export class SaveController {
     public update() {
         this.setupEventsForIndividuals(); 
 
-        document.querySelector('label[for="download-button"]')?.classList.remove("hidden");
     }
 
     private addEventListeners(): void {
@@ -94,15 +93,15 @@ export class SaveController {
             this._currentToggleItems = !this._currentToggleItems;
         })
 
-        this._downloadButton.addEventListener("click", () => {
-            let data = this._save.data;
-            this.downloadFile(data, this._save.get_filename());
-        });
+        this._downloadButtons.forEach((button) => button.addEventListener("click", () => {
+            this.downloadFile(this._save.data, this._save.get_filename());
+        }));
 
-        this._convertButton.addEventListener("click", async () => {
-            let data = await this._save.convert();
-            this.downloadFile(data, this._save.get_filename());
-        })
+        this._reloadButtons.forEach((button) => button.addEventListener("click", () => this.reloadData()));
+
+        this._uploadButton.addEventListener("click", () => {
+            this._uploadButton.value = "";
+        });
 
         this._uploadButton.addEventListener("change", (event) => {
             this.uploadData(event);
@@ -204,12 +203,15 @@ export class SaveController {
             element.classList.remove("hidden");
         });
 
+        document.querySelectorAll('.save-actions').forEach((element) => {
+            element.classList.remove("hidden");
+            element.classList.add(element.classList.contains("grid") ? "grid" : "flex");
+        });
+
         if (Constants.VERSION_LOADED == Versions.ONLINE) {
             this._toggleOnlineMarks.classList.remove("hidden");
-            this._convertButton.parentElement!.classList.remove("hidden");
         } else {
             this._toggleOnlineMarks.classList.add("hidden");
-            this._convertButton.parentElement!.classList.add("hidden");
         }
     }
 
@@ -222,6 +224,8 @@ export class SaveController {
             let data = new Uint8Array(result);
             let name = file.name;
             this._save.update(data).then(() => {
+                localStorage.setItem("original-save", this.encodeData(data));
+                localStorage.setItem("original-save-filename", name);
                 this._save.set_filename(name);
                 this.displayMenus();
                 let tabs = document.querySelectorAll('.tab-content') as NodeListOf<HTMLElement>;
@@ -230,11 +234,31 @@ export class SaveController {
                 })
 
                 this.update();
+                document.querySelector<HTMLButtonElement>('#tab-achievements')?.click();
             });
         };
         reader.readAsArrayBuffer(file);
 
 
+    }
+
+    private reloadData(): void {
+        const storedData = localStorage.getItem("original-save");
+        const filename = localStorage.getItem("original-save-filename");
+        if (!storedData || !filename) return;
+
+        const binary = atob(storedData);
+        const data = Uint8Array.from(binary, character => character.charCodeAt(0));
+        this._save.update(data).then(() => {
+            this._save.set_filename(filename);
+            document.querySelectorAll<HTMLElement>('.tab-content').forEach((tab) => tab.dataset.loaded = '');
+            document.querySelector<HTMLButtonElement>('#tab-achievements')?.click();
+            showToast('Original save restored', 'success');
+        });
+    }
+
+    private encodeData(data: Uint8Array): string {
+        return btoa(Array.from(data, byte => String.fromCharCode(byte)).join(""));
     }
 
     public toggleAchievement(id: number, unlocked: boolean): void {

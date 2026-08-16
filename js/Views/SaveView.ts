@@ -24,7 +24,6 @@ export class SaveView implements Observer {
     private _challenges: HTMLElement;
     private _items: HTMLElement;
     private _bestiary: HTMLElement;
-    private _stats: HTMLElement;
     private _controller: SaveController;
 
     constructor(controller: SaveController) {
@@ -33,7 +32,6 @@ export class SaveView implements Observer {
         this._items = document.getElementById("content-items")!;
         this._challenges = document.getElementById("content-challenges")!;
         this._bestiary = document.getElementById("content-bestiary")!;
-        this._stats = document.getElementById("content-stats")!;
         this._controller = controller;
 
         [this._achievements, this._items, this._bestiary].forEach((section) => {
@@ -68,10 +66,6 @@ export class SaveView implements Observer {
         
         if (data.bestiary) {
             this.populateBestiary(data);
-        }
-
-        if (data.stats) {
-            this.populateStats(data);
         }
 
         if (data.loading && !data.loaded) {
@@ -300,14 +294,4 @@ export class SaveView implements Observer {
         this.filter(this._bestiary);
     }
 
-    private populateStats(data: any): void {
-        console.log(data)
-        data.stats.forEach((value: number, key: string) => {
-            let elements = this._stats.querySelector("span#" + key);
-            if (!elements)
-                return;
-
-            elements.innerHTML = value.toString();            
-        });
-    }
 }

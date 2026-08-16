@@ -128,6 +128,11 @@ function getAssetPath($name) {
                     <button class="tab-button tab-btn w-full text-left font-bold text-sm py-2.5 px-4 rounded-lg focus:outline-none hidden" id="tab-challenges">Challenges</button>
                     <button class="tab-button tab-btn w-full text-left font-bold text-sm py-2.5 px-4 rounded-lg focus:outline-none hidden" id="tab-bestiary">Bestiary</button>
                     <button class="tab-button tab-btn w-full text-left font-bold text-sm py-2.5 px-4 rounded-lg focus:outline-none hidden" id="tab-others">Others</button>
+                    <div class="save-actions hidden grid grid-cols-3 gap-2 pt-2 border-t" style="border-color: var(--color-border)">
+                        <label for="upload-button" class="btn cursor-pointer rounded-lg px-2 py-2 text-center text-xs font-bold">LOAD</label>
+                        <button type="button" class="reload-button btn rounded-lg px-2 py-2 text-xs font-bold">RELOAD</button>
+                        <button type="button" class="download-button btn rounded-lg px-2 py-2 text-xs font-bold">EXPORT</button>
+                    </div>
                 </div>
 
                 <!-- Desktop navigation -->
@@ -139,7 +144,12 @@ function getAssetPath($name) {
                     <button class="tab-button tab-btn px-5 py-4 font-bold text-sm tracking-wide uppercase focus:outline-none hidden" id="tab-challenges">Challenges</button>
                     <button class="tab-button tab-btn px-5 py-4 font-bold text-sm tracking-wide uppercase focus:outline-none hidden" id="tab-bestiary">Bestiary</button>
                     <button class="tab-button tab-btn px-5 py-4 font-bold text-sm tracking-wide uppercase focus:outline-none hidden" id="tab-others">Others</button>
-                    <div class="ml-auto pl-4">
+                    <div class="save-actions hidden items-center gap-2 ml-auto pl-4">
+                        <label for="upload-button" class="btn cursor-pointer rounded-lg px-3 py-2 text-xs font-bold">LOAD</label>
+                        <button type="button" class="reload-button btn rounded-lg px-3 py-2 text-xs font-bold">RELOAD</button>
+                        <button type="button" class="download-button btn rounded-lg px-3 py-2 text-xs font-bold">EXPORT</button>
+                    </div>
+                    <div class="pl-4">
                         <button class="theme-switcher" id="theme-switcher-btn">Theme</button>
                     </div>
                 </div>
@@ -160,14 +170,6 @@ function getAssetPath($name) {
                         <label id="upload-label" for="upload-button" class="upload-label flex-1 sm:max-w-xs text-center rounded-xl p-6">
                             <input id="upload-button" type="file" class="hidden" accept=".dat">
                             <span class="block uppercase font-bold tracking-wider text-sm">Load save file</span>
-                        </label>
-                        <label for="download-button" class="hidden upload-label flex-1 sm:max-w-xs text-center rounded-xl p-6">
-                            <button id="download-button" class="hidden"></button>
-                            <span class="block uppercase font-bold tracking-wider text-sm">Export save file</span>
-                        </label>
-                        <label for="convert-button" class="hidden upload-label flex-1 sm:max-w-xs text-center rounded-xl p-6">
-                            <button id="convert-button" class="hidden"></button>
-                            <span class="block uppercase font-bold tracking-wider text-sm">Convert to Repentance</span>
                         </label>
 
                         <div class="error w-full text-center font-bold error-box p-4 rounded-lg hidden"></div>
@@ -197,41 +199,6 @@ function getAssetPath($name) {
                         <div class="text-sm color-muted flex flex-col gap-1">
                             <p>This website is ad-free. To support me: <a class="color-accent font-bold hover:underline" href="https://patreon.com/demorck" target="_blank">Patreon</a></p>
                             <p>Source code: <a class="color-accent font-bold hover:underline" href="https://github.com/Demorck/Isaac-save-manager" target="_blank">GitHub</a></p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col md:flex-row gap-6">
-                        <div class="flex-1 card rounded-2xl p-6 md:p-8 flex flex-col gap-4">
-                            <h2 class="text-2xl section-title tracking-wide">Functionalities</h2>
-                            <ul class="list-disc list-inside text-sm color-muted card-inner p-4 rounded-lg flex flex-col gap-1">
-                                <li>Unlock all achievements</li>
-                                <li>Unlock all marks</li>
-                                <li>See all items</li>
-                                <li>Finish all challenges</li>
-                                <li>See your bestiary and change it</li>
-                                <li>Unlock one thing instead of all</li>
-                            </ul>
-
-                            <h2 class="text-2xl section-title tracking-wide mt-auto pt-4">Roadmap</h2>
-                            <ul class="list-disc list-inside text-sm color-muted card-inner p-4 rounded-lg flex flex-col gap-1">
-                                <li>Unlock sins</li>
-                                <li>Unlock only characters?</li>
-                                <li>Change statistics</li>
-                                <li>AB+ support</li>
-                                <li class="color-accent">Feedback needed! :)</li>
-                            </ul>
-                        </div>
-
-                        <div class="flex-1 card rounded-2xl p-6 md:p-8 flex flex-col gap-4">
-                            <h2 class="text-2xl section-title tracking-wide">Statistics</h2>
-                            <ul id="content-stats" class="list-none font-mono text-sm flex flex-col">
-                                <li class="stat-row flex justify-between py-2"><span>Number of deaths:</span> <span id="deaths" class="font-bold color-accent">0</span></li>
-                                <li class="stat-row flex justify-between py-2"><span>Mom's Kills:</span> <span id="mom-kills" class="font-bold color-accent">0</span></li>
-                                <li class="stat-row flex justify-between py-2"><span>Number of rocks broken:</span> <span id="broken-rocks" class="font-bold color-accent">0</span></li>
-                                <li class="stat-row flex justify-between py-2"><span>Shopkeeper kills:</span> <span id="shopkeeper-kills" class="font-bold color-accent">0</span></li>
-                                <li class="stat-row flex justify-between py-2"><span>Coins in donation machine:</span> <span id="donation-coins" class="font-bold color-accent">0</span></li>
-                                <li class="pt-2 text-center text-xs color-muted italic">More is coming...</li>
-                            </ul>
                         </div>
                     </div>
 
@@ -429,8 +396,7 @@ function getAssetPath($name) {
             'toggle-online-marks': 'Online marks updated!',
             'unlock-items':        'Items status updated!',
             'unlock-bestiary':     'Bestiary unlocked!',
-            'unlock-sins':         'Sins unlocked!',
-            'convert-button':      'Save converted successfully!'
+            'unlock-sins':         'Sins unlocked!'
         };
 
         for (const [id, msg] of Object.entries(actionMessages)) {
