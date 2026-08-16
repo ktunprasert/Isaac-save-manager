@@ -9,9 +9,12 @@ export const getItemTemplate = (item: Item, index: number, controller: SaveContr
     let delay = (index % 50) * 15;
     let itemNumber = Utils.numberWithLeadingZeros(item.getID());
     return html`
-        <div class="p-1 sm:p-2 cursor-pointer hover:bg-white/10 rounded overflow-hidden flex justify-center items-center transition-colors animate-stagger" 
+        <div class="filterable p-1 sm:p-2 cursor-pointer hover:bg-white/10 rounded overflow-hidden flex justify-center items-center transition-colors animate-stagger"
              style="animation-delay: ${delay}ms" 
              data-id="${item.getID()}"
+             data-name="${item.getName()}"
+             data-status="${item.isSeen()}"
+             title="${item.getName()} (#${item.getID()})"
              @click=${() => controller.toggleItem(item.getID(), item.isSeen())}>
             <img loading="lazy" 
                  src="/assets/gfx/items/collectibles/${itemNumber}.png" 

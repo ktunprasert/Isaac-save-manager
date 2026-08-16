@@ -7,10 +7,13 @@ export const getBestiaryTemplate = (entity: Entity, index: number, onClick: (ent
     let not_unlocked = !entity.isUnlocked();
 
     return html`
-        <div class="items-center justify-center flex p-2 hover:bg-white/10 rounded-xl cursor-pointer transition-colors animate-stagger" 
+        <div class="filterable items-center justify-center flex p-2 hover:bg-white/10 rounded-xl cursor-pointer transition-colors animate-stagger"
              style="animation-delay: ${delay}ms" 
-             data-id="${entity.getId()}" 
+             data-id="${entity.getId()}"
+             data-name="${entity.getName()}"
              data-variant="${entity.getVariant()}"
+             data-status="${entity.isUnlocked()}"
+             title="${entity.getName()} (#${entity.getId()}, variant ${entity.getVariant()})"
              @click="${() => onClick(entity)}">
             <img loading="lazy" 
                  src="/assets/gfx/enemies/${entity.getName().replace(/ /g, "_")}.png" 

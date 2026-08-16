@@ -253,9 +253,16 @@ function getAssetPath($name) {
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div>Unlocked</div>
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-neutral-600"></div>Locked (greyed)</div>
                 </div>
-                <input id="search-achievements" type="search" placeholder="Search achievements by name or ID..." autocomplete="off"
-                    class="w-full mb-6 rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
-                    style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
+                <div class="mb-6 flex flex-col sm:flex-row gap-3">
+                    <input data-filter-search type="search" placeholder="Search achievements by name or ID..." autocomplete="off"
+                        class="w-full rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
+                        style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
+                    <select data-filter-status class="rounded-lg border bg-black px-4 py-3 color-text" style="border-color: var(--color-border)">
+                        <option value="all">All</option>
+                        <option value="true">Unlocked only</option>
+                        <option value="false">Locked only</option>
+                    </select>
+                </div>
                 <div class="card p-3 rounded-xl mb-6 text-sm color-muted">
                     <p>When the game loads the savefile, it will check marks, endings and stats to unlock achievements.<br>For example, if you disable all achievements and you have the "Mom" ending, it will unlock corresponding achievements.</p>
                 </div>
@@ -291,6 +298,16 @@ function getAssetPath($name) {
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div>Seen</div>
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-neutral-600"></div>Not seen (greyed)</div>
                 </div>
+                <div class="mb-6 flex flex-col sm:flex-row gap-3">
+                    <input data-filter-search type="search" placeholder="Search items by name or ID..." autocomplete="off"
+                        class="w-full rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
+                        style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
+                    <select data-filter-status class="rounded-lg border bg-black px-4 py-3 color-text" style="border-color: var(--color-border)">
+                        <option value="all">All</option>
+                        <option value="true">Seen only</option>
+                        <option value="false">Not seen only</option>
+                    </select>
+                </div>
                 <div class="wrapper flex flex-col flex-wrap gap-5"></div>
             </div>
 
@@ -314,6 +331,16 @@ function getAssetPath($name) {
                         Unlock Bestiary
                         <span class="text-xs font-normal color-muted block mt-0.5">(set encounter to 1 if locked)</span>
                     </button>
+                </div>
+                <div class="mb-6 flex flex-col sm:flex-row gap-3">
+                    <input data-filter-search type="search" placeholder="Search bestiary by name, ID, or variant..." autocomplete="off"
+                        class="w-full rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
+                        style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
+                    <select data-filter-status class="rounded-lg border bg-black px-4 py-3 color-text" style="border-color: var(--color-border)">
+                        <option value="all">All</option>
+                        <option value="true">Encountered only</option>
+                        <option value="false">Not encountered only</option>
+                    </select>
                 </div>
                 <div class="wrapper flex flex-col gap-5"></div>
             </div>

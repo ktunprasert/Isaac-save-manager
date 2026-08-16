@@ -23,6 +23,10 @@ export class Item {
         return this._id;
     }
 
+    public getName(): string {
+        return this._name;
+    }
+
     public isSeen(): boolean {
         return this._seen;
     }

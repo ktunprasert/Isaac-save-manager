@@ -26,7 +26,6 @@ export class SaveView implements Observer {
     private _bestiary: HTMLElement;
     private _stats: HTMLElement;
     private _controller: SaveController;
-    private _achievementSearch: HTMLInputElement;
 
     constructor(controller: SaveController) {
         this._achievements = document.getElementById("content-achievements")!;
@@ -35,10 +34,12 @@ export class SaveView implements Observer {
         this._challenges = document.getElementById("content-challenges")!;
         this._bestiary = document.getElementById("content-bestiary")!;
         this._stats = document.getElementById("content-stats")!;
-        this._achievementSearch = document.getElementById("search-achievements") as HTMLInputElement;
         this._controller = controller;
 
-        this._achievementSearch.addEventListener("input", () => this.filterAchievements());
+        [this._achievements, this._items, this._bestiary].forEach((section) => {
+            section.querySelector("[data-filter-search]")!.addEventListener("input", () => this.filter(section));
+            section.querySelector("[data-filter-status]")!.addEventListener("change", () => this.filter(section));
+        });
     }
 
     update(data: any) {
@@ -106,7 +107,7 @@ export class SaveView implements Observer {
 
             if (count % 120 === 0 || index === items.length - 1) {
                 pagesHtml.push(html`
-                    <div class="flex-col gap-2 'flex animate-fade-in'}" data-page="${countPage}">
+                    <div class="filter-group flex-col gap-2 flex animate-fade-in" data-page="${countPage}">
                         <div class="flex flex-1 border border-white/10 bg-black/20 backdrop-blur-sm shadow-lg flex-col rounded-3xl flex-wrap gap-2 p-4 items-center">
                             <h2 class="text-2xl font-upheaval text-gray-300 mb-2 tracking-wider">Page ${countPage}</h2>
                             ${currentPageRowsHtml}
@@ -119,6 +120,7 @@ export class SaveView implements Observer {
         });
 
         render(html`${pagesHtml}`, wrapper!);
+        this.filter(this._items);
     }
 
     private populateCharacters(data: any): void {
@@ -147,15 +149,17 @@ export class SaveView implements Observer {
         });
     
         render(html`${achievementsHTML}`, wrapper!);
-        this.filterAchievements();
+        this.filter(this._achievements);
     }
 
-    private filterAchievements(): void {
-        const terms = this._achievementSearch.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    private filter(section: HTMLElement): void {
+        const search = section.querySelector<HTMLInputElement>("[data-filter-search]")!;
+        const status = section.querySelector<HTMLSelectElement>("[data-filter-status]")!.value;
+        const terms = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
-        this._achievements.querySelectorAll<HTMLElement>(".achievements").forEach((element) => {
-            const searchable = `${element.dataset.name} ${element.dataset.id}`.toLowerCase();
-            const matches = terms.every((term) => {
+        section.querySelectorAll<HTMLElement>(".filterable").forEach((element) => {
+            const searchable = `${element.dataset.name} ${element.dataset.id} ${element.dataset.variant ?? ""}`.toLowerCase();
+            const matchesSearch = terms.every((term) => {
                 let position = 0;
                 for (const character of searchable) {
                     if (character === term[position]) position++;
@@ -163,8 +167,13 @@ export class SaveView implements Observer {
                 }
                 return false;
             });
+            const matchesStatus = status === "all" || element.dataset.status === status;
 
-            element.classList.toggle("hidden", !matches);
+            element.classList.toggle("hidden", !matchesSearch || !matchesStatus);
+        });
+
+        section.querySelectorAll<HTMLElement>(".filter-group").forEach((group) => {
+            group.classList.toggle("hidden", !group.querySelector(".filterable:not(.hidden)"));
         });
     }
 
@@ -235,7 +244,7 @@ export class SaveView implements Observer {
         let wrapper = this._bestiary.querySelector(".wrapper")  as RenderRootNode;
 
         let getPageHTML = (pageIndex: number, itemsHTML: any) => html`
-            <div class="flex flex-col rounded-3xl border border-white/10 bg-black/30 backdrop-blur-sm shadow-lg flex-wrap sm:w-1/5 items-center gap-2 p-4">
+            <div class="filter-group flex flex-col rounded-3xl border border-white/10 bg-black/30 backdrop-blur-sm shadow-lg flex-wrap sm:w-1/5 items-center gap-2 p-4">
                 <h1 class="text-2xl font-upheaval text-gray-300 tracking-wider">Page ${pageIndex}</h1>
                 <div class="flex flex-col flex-nowrap items-stretch justify-start flex-1 gap-2">
                     ${itemsHTML}
@@ -280,6 +289,7 @@ export class SaveView implements Observer {
         `;
 
         render(fragmentHTML, wrapper!);
+        this.filter(this._bestiary);
     }
 
     private populateStats(data: any): void {
