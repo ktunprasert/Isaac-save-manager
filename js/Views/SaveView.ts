@@ -158,8 +158,12 @@ export class SaveView implements Observer {
         const search = section.querySelector<HTMLInputElement>("[data-filter-search]")!;
         const status = section.querySelector<HTMLElement>("[data-filter-status] .btn-primary")!.dataset.value;
         const terms = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+        const elements = section.querySelectorAll<HTMLElement>(".filterable");
+        const counts = section.querySelector<HTMLElement>("[data-status-counts]")!;
+        const trueCount = Array.from(elements).filter((element) => element.dataset.status === "true").length;
+        counts.textContent = `${trueCount} ${counts.dataset.trueLabel} | ${elements.length - trueCount} ${counts.dataset.falseLabel} | ${elements.length} total`;
 
-        section.querySelectorAll<HTMLElement>(".filterable").forEach((element) => {
+        elements.forEach((element) => {
             const searchable = `${element.dataset.name} ${element.dataset.id} ${element.dataset.variant ?? ""}`.toLowerCase();
             const matchesSearch = terms.every((term) => {
                 let position = 0;

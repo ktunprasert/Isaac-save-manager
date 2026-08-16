@@ -226,6 +226,7 @@ function getAssetPath($name) {
                 <div class="mb-6 flex flex-wrap gap-4 text-xs font-bold uppercase tracking-wider color-muted">
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div>Unlocked</div>
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-neutral-600"></div>Locked (greyed)</div>
+                    <div data-status-counts data-true-label="unlocked" data-false-label="locked" class="sm:ml-auto normal-case"></div>
                 </div>
                 <div class="mb-6 flex flex-col sm:flex-row gap-3">
                     <input data-filter-search type="search" placeholder="Search achievements by name or ID..." autocomplete="off"
@@ -271,6 +272,7 @@ function getAssetPath($name) {
                 <div class="mb-6 flex flex-wrap gap-4 text-xs font-bold uppercase tracking-wider color-muted">
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div>Seen</div>
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-neutral-600"></div>Not seen (greyed)</div>
+                    <div data-status-counts data-true-label="seen" data-false-label="unseen" class="sm:ml-auto normal-case"></div>
                 </div>
                 <div class="mb-6 flex flex-col sm:flex-row gap-3">
                     <input data-filter-search type="search" placeholder="Search items by name or ID..." autocomplete="off"
@@ -305,6 +307,11 @@ function getAssetPath($name) {
                         Unlock Bestiary
                         <span class="text-xs font-normal color-muted block mt-0.5">(set encounter to 1 if locked)</span>
                     </button>
+                </div>
+                <div class="mb-6 flex flex-wrap gap-4 text-xs font-bold uppercase tracking-wider color-muted">
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-white"></div>Encountered</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-neutral-600"></div>Not encountered</div>
+                    <div data-status-counts data-true-label="encountered" data-false-label="not encountered" class="sm:ml-auto normal-case"></div>
                 </div>
                 <div class="mb-6 flex flex-col sm:flex-row gap-3">
                     <input data-filter-search type="search" placeholder="Search bestiary by name, ID, or variant..." autocomplete="off"
