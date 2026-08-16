@@ -60,6 +60,13 @@ function getAssetPath($name) {
         </div>
     </div>
 
+    <div id="drop-overlay" class="hidden fixed inset-0 z-[110] modal-overlay pointer-events-none items-center justify-center p-6">
+        <div class="modal-box w-full max-w-xl rounded-2xl border-2 border-dashed p-12 text-center" style="border-color: var(--color-accent)">
+            <p class="font-upheaval text-3xl tracking-wider page-title">Drop save file</p>
+            <p class="mt-2 text-sm color-muted">Release anywhere to load</p>
+        </div>
+    </div>
+
     <!-- Bestiary modal -->
     <div id="modal-bestiary"
          class="hidden fixed inset-0 z-[90] flex items-center justify-center modal-overlay"
@@ -369,19 +376,38 @@ function getAssetPath($name) {
         };
 
         // Drag and drop
-        const dropZone = document.getElementById('upload-label');
+        const dropIndicator = document.getElementById('upload-label');
+        const dropOverlay = document.getElementById('drop-overlay');
         const fileInput = document.getElementById('upload-button');
+        let dragDepth = 0;
 
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
-            dropZone.addEventListener(e, ev => { ev.preventDefault(); ev.stopPropagation(); });
-            document.body.addEventListener(e, ev => { ev.preventDefault(); ev.stopPropagation(); });
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.body.addEventListener(eventName, event => {
+                event.preventDefault();
+                event.stopPropagation();
+            });
         });
-        dropZone.addEventListener('dragenter', () => dropZone.classList.add('drag-over'));
-        dropZone.addEventListener('dragover',  () => dropZone.classList.add('drag-over'));
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-        dropZone.addEventListener('drop', (e) => {
-            dropZone.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
+
+        document.body.addEventListener('dragenter', () => {
+            dragDepth++;
+            dropIndicator.classList.add('drag-over');
+            dropOverlay.classList.remove('hidden');
+            dropOverlay.classList.add('flex');
+        });
+        document.body.addEventListener('dragleave', () => {
+            dragDepth--;
+            if (dragDepth === 0) {
+                dropIndicator.classList.remove('drag-over');
+                dropOverlay.classList.add('hidden');
+                dropOverlay.classList.remove('flex');
+            }
+        });
+        document.body.addEventListener('drop', event => {
+            dragDepth = 0;
+            dropIndicator.classList.remove('drag-over');
+            dropOverlay.classList.add('hidden');
+            dropOverlay.classList.remove('flex');
+            const files = event.dataTransfer.files;
             if (files.length > 0) {
                 fileInput.files = files;
                 fileInput.dispatchEvent(new Event('change', { bubbles: true }));
