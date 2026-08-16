@@ -38,7 +38,15 @@ export class SaveView implements Observer {
 
         [this._achievements, this._items, this._bestiary].forEach((section) => {
             section.querySelector("[data-filter-search]")!.addEventListener("input", () => this.filter(section));
-            section.querySelector("[data-filter-status]")!.addEventListener("change", () => this.filter(section));
+            section.querySelectorAll<HTMLButtonElement>("[data-filter-status] button").forEach((button) => {
+                button.addEventListener("click", () => {
+                    section.querySelectorAll("[data-filter-status] button").forEach((option) => {
+                        option.classList.toggle("btn-primary", option === button);
+                        option.classList.toggle("btn", option !== button);
+                    });
+                    this.filter(section);
+                });
+            });
         });
     }
 
@@ -154,7 +162,7 @@ export class SaveView implements Observer {
 
     private filter(section: HTMLElement): void {
         const search = section.querySelector<HTMLInputElement>("[data-filter-search]")!;
-        const status = section.querySelector<HTMLSelectElement>("[data-filter-status]")!.value;
+        const status = section.querySelector<HTMLElement>("[data-filter-status] .btn-primary")!.dataset.value;
         const terms = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
         section.querySelectorAll<HTMLElement>(".filterable").forEach((element) => {

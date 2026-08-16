@@ -257,11 +257,11 @@ function getAssetPath($name) {
                     <input data-filter-search type="search" placeholder="Search achievements by name or ID..." autocomplete="off"
                         class="w-full rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
                         style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
-                    <select data-filter-status class="rounded-lg border bg-black px-4 py-3 color-text" style="border-color: var(--color-border)">
-                        <option value="all">All</option>
-                        <option value="true">Unlocked only</option>
-                        <option value="false">Locked only</option>
-                    </select>
+                    <div data-filter-status class="flex shrink-0" role="group" aria-label="Achievement status">
+                        <button type="button" data-value="all" class="btn-primary rounded-l-lg px-4 py-3 text-xs font-bold">ALL</button>
+                        <button type="button" data-value="true" class="btn border-l-0 px-4 py-3 text-xs font-bold">UNLOCKED</button>
+                        <button type="button" data-value="false" class="btn border-l-0 rounded-r-lg px-4 py-3 text-xs font-bold">LOCKED</button>
+                    </div>
                 </div>
                 <div class="card p-3 rounded-xl mb-6 text-sm color-muted">
                     <p>When the game loads the savefile, it will check marks, endings and stats to unlock achievements.<br>For example, if you disable all achievements and you have the "Mom" ending, it will unlock corresponding achievements.</p>
@@ -302,11 +302,11 @@ function getAssetPath($name) {
                     <input data-filter-search type="search" placeholder="Search items by name or ID..." autocomplete="off"
                         class="w-full rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
                         style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
-                    <select data-filter-status class="rounded-lg border bg-black px-4 py-3 color-text" style="border-color: var(--color-border)">
-                        <option value="all">All</option>
-                        <option value="true">Seen only</option>
-                        <option value="false">Not seen only</option>
-                    </select>
+                    <div data-filter-status class="flex shrink-0" role="group" aria-label="Item status">
+                        <button type="button" data-value="all" class="btn-primary rounded-l-lg px-4 py-3 text-xs font-bold">ALL</button>
+                        <button type="button" data-value="true" class="btn border-l-0 px-4 py-3 text-xs font-bold">SEEN</button>
+                        <button type="button" data-value="false" class="btn border-l-0 rounded-r-lg px-4 py-3 text-xs font-bold">UNSEEN</button>
+                    </div>
                 </div>
                 <div class="wrapper flex flex-col flex-wrap gap-5"></div>
             </div>
@@ -336,11 +336,11 @@ function getAssetPath($name) {
                     <input data-filter-search type="search" placeholder="Search bestiary by name, ID, or variant..." autocomplete="off"
                         class="w-full rounded-lg border bg-black/20 px-4 py-3 color-text placeholder:text-neutral-500 focus:outline-none focus:ring-2"
                         style="border-color: var(--color-border); --tw-ring-color: var(--color-accent)">
-                    <select data-filter-status class="rounded-lg border bg-black px-4 py-3 color-text" style="border-color: var(--color-border)">
-                        <option value="all">All</option>
-                        <option value="true">Encountered only</option>
-                        <option value="false">Not encountered only</option>
-                    </select>
+                    <div data-filter-status class="flex shrink-0" role="group" aria-label="Bestiary status">
+                        <button type="button" data-value="all" class="btn-primary rounded-l-lg px-4 py-3 text-xs font-bold">ALL</button>
+                        <button type="button" data-value="true" class="btn border-l-0 px-4 py-3 text-xs font-bold">ENCOUNTERED</button>
+                        <button type="button" data-value="false" class="btn border-l-0 rounded-r-lg px-4 py-3 text-xs font-bold">NOT ENCOUNTERED</button>
+                    </div>
                 </div>
                 <div class="wrapper flex flex-col gap-5"></div>
             </div>
